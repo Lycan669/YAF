@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programme Politique — Mouvement de la Jeunesse Antisioniste</title>
+  <style>
+    :root {
+      --primary: #d90429;
+      --primary-dark: #a3031e;
+      --primary-light: #ff4d6a;
+      --dark: #0d0d0d;
+      --dark-card: #1a1a2e;
+      --light: #f0f2f5;
+      --gray: #6b7280;
+      --border: rgba(255,255,255,0.08);
+      --glass: rgba(255,255,255,0.04);
+      --shadow: 0 20px 60px rgba(0,0,0,0.4);
+      --radius: 12px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.7;
+      color: #e2e8f0;
+      background: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* === PROGRESS BAR === */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      z-index: 1000;
+      transition: width 0.1s linear;
+    }
+
+    /* === HEADER === */
+    header {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a0a0e 50%, #0d0d0d 100%);
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse at 20% 50%, rgba(217,4,41,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(217,4,41,0.08) 0%, transparent 40%);
+      animation: pulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.5; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.05); }
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .header-badge {
+      display: inline-block;
+      padding: 0.4rem 1.2rem;
+      border: 1px solid var(--primary);
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--primary-light);
+      margin-bottom: 2rem;
+      animation: fadeInDown 0.8s ease both;
+    }
+
+    header h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #fff 0%, var(--primary-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+
+    header p {
+      font-size: 1.15rem;
+      color: #94a3b8;
+      max-width: 600px;
+      margin: 0 auto 3rem;
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: #64748b;
+      font-size: 0.8rem;
+      animation: bounce 2s infinite;
+    }
+
+    .scroll-hint .arrow {
+      width: 24px;
+      height: 24px;
+      border-right: 2px solid var(--primary);
+      border-bottom: 2px solid var(--primary);
+      transform: rotate(45deg);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === SEARCH === */
+    .search-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      padding: 1rem 1.5rem;
+      background: rgba(13,13,13,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transform: translateY(-100%);
+      transition: transform var(--transition);
+    }
+
+    .search-container.active { transform: translateY(0); }
+
+    .search-inner {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 0.75rem 1.25rem;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: border var(--transition);
+    }
+
+    .search-input:focus { border-color: var(--primary); }
+
+    .search-close {
+      padding: 0.5rem 1rem;
+      background: var(--primary);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* === NAV === */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13,13,13,0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: box-shadow var(--transition);
+    }
+
+    nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.5); }
+
+    nav a {
+      text-decoration: none;
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 0.82rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    nav a:hover, nav a.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* === MAIN === */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+
+    section {
+      margin-bottom: 5rem;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-num {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    section h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .chapitre-intro {
+      color: var(--gray);
+      font-style: italic;
+      margin-bottom: 2rem;
+      padding-left: 4.5rem;
+      font-size: 0.95rem;
+    }
+
+    /* === LAW CARDS === */
+    .loi-card {
+      background: var(--dark-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      overflow: hidden;
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+
+    .loi-card:hover {
+      border-color: rgba(217,4,41,0.3);
+      transform: translateX(4px);
+      box-shadow: 0 8px 30px rgba(217,4,41,0.08);
+    }
+
+    .loi-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .loi-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.15rem 0.6rem;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    .loi-card-header h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      flex: 1;
+    }
+
+    .loi-toggle {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      color: #94a3b8;
+      transition: all var(--transition);
+      flex-shrink: 0;
+    }
+
+    .loi-card.open .loi-toggle {
+      transform: rotate(180deg);
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .loi-card-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .loi-card.open .loi-card-body {
+      max-height: 300px;
+    }
+
+    .loi-card-body p {
+      padding: 0 1.5rem 1.25rem 4.75rem;
+      color: #94a3b8;
+      font-size: 0.93rem;
+      line-height: 1.8;
+    }
+
+    /* === STATS BAR === */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 4rem 0;
+      padding: 2rem;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .stat-item .stat-num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary-light);
+    }
+
+    .stat-item .stat-label {
+      font-size: 0.8rem;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 0.25rem;
+    }
+
+    /* === BACK TO TOP === */
+    .back-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary);
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all var(--transition);
+      z-index: 99;
+      box-shadow: 0 4px 20px rgba(217,4,41,0.4);
+    }
+
+    .back-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .back-top:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(217,4,41,0.5);
+    }
+
+    /* === FOOTER === */
+    footer {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    footer .motto {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary-light);
+      margin-bottom: 0.5rem;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 600px) {
+      .chapitre-intro { padding-left: 0; }
+      .loi-card-body p { padding-left: 1.5rem; }
+      .section-header { flex-direction: column; align-items: flex-start; }
+      nav a { font-size: 0.75rem; padding: 0.35rem 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- SEARCH -->
+  <div class="search-container" id="searchContainer">
+    <div class="search-inner">
+      <input type="text" class="search-input" id="searchInput" placeholder="Rechercher une loi…">
+      <button class="search-close" onclick="toggleSearch()">✕</button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-content">
+      <span class="header-badge">Mouvement de la Jeunesse</span>
+      <h1>Programme Législatif de Rupture</h1>
+      <p>Pouvoir d'achat, souveraineté populaire, antifascisme, anticolonialisme et paix mondiale.</p>
+    </div>
+    <div class="scroll-hint">
+      <span>Défiler</span>
+      <div class="arrow"></div>
+    </div>
+  </header>
+
+  <!-- NAV -->
+  <nav id="mainNav">
+    <a href="#chapitre-1" data-target="chapitre-1">1. Pouvoir d'achat</a>
+    <a href="#chapitre-2" data-target="chapitre-2">2. Richesses</a>
+    <a href="#chapitre-3" data-target="chapitre-3">3. Antisionisme</a>
+    <a href="#chapitre-4" data-target="chapitre-4">4. Anti-impérialisme</a>
+    <a href="#chapitre-5" data-target="chapitre-5">5. Antifascisme</a>
+    <a href="#chapitre-6" data-target="chapitre-6">6. Démocratie</a>
+    <a href="#" onclick="toggleSearch(); return false;" style="background:var(--primary);color:#fff;">🔍</a>
+  </nav>
+
+  <main>
+
+    <!-- STATS -->
+    <div class="stats-bar">
+      <div class="stat-item"><div class="stat-num">32</div><div class="stat-label">Lois</div></div>
+      <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">Chapitres</div></div>
+      <div class="stat-item"><div class="stat-num">100</div><div class="stat-label">Jours</div></div>
+      <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Solidarité</div></div>
+    </div>
+
+    <!-- CHAPITRE 1 -->
+    <section id="chapitre-1">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <h2>Pouvoir d'achat immédiat et urgence sociale</h2>
+      </div>
+      <p class="chapitre-intro">Les mesures des 100 premiers jours pour augmenter le niveau de vie des travailleurs, des jeunes et des retraités.</p>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 1</span>
+          <h3>Augmentation massive du SMIC et indexation des salaires</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Revalorisation immédiate du SMIC net à 1 700 € minimum et rétablissement de l'échelle mobile des salaires (indexation automatique de tous les salaires et pensions de retraite sur l'inflation).</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 2</span>
+          <h3>Blocage des prix et baisse de la TVA</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Gel immédiat par décret des prix d'un panier de 100 produits alimentaires et d'hygiène de première nécessité, et suppression totale de la TVA (passage à 0 %) sur ces produits essentiels.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 3</span>
+          <h3>Gratuité des biens vitaux</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Instauration de la gratuité des premiers mètres cubes d'eau (les 30 premiers m³ par an et par foyer), des kilowattheures vitaux d'électricité et de gaz, ainsi que des transports en commun sur tout le territoire.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 4</span>
+          <h3>Encadrement strict des loyers et gel des quittances</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Gel immédiat des loyers pendant trois ans, baisse obligatoire des loyers abusifs dans les zones tendues, interdiction des expulsions locatives sans relogement digne et réquisition des logements vacants détenus par les banques et fonds d'investissement.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 5</span>
+          <h3>Rétablissement de la retraite à 60 ans</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Abrogation des réformes des retraites successives, retour de l'âge légal de départ à 60 ans à taux plein (et 55 ans pour les métiers pénibles) avec aucune pension inférieure au SMIC.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 6</span>
+          <h3>Allocation d'autonomie universelle pour la jeunesse</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Versement d'une allocation mensuelle de 1 200 € (au-dessus du seuil de pauvreté) pour tous les jeunes de 18 à 25 ans en études, en formation ou en recherche d'emploi, accompagnée de la gratuité des cantines scolaires et universitaires.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 7</span>
+          <h3>Remboursement à 100 % de la santé</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Suppression des dépassements d'honoraires et des franchises médicales, prise en charge intégrale par la Sécurité sociale des soins dentaires, optiques, auditifs et de santé mentale.</p></div>
+      </div>
+    </section>
+
+    <!-- CHAPITRE 2 -->
+    <section id="chapitre-2">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <h2>Partage des richesses et pouvoir au prolétariat</h2>
+      </div>
+      <p class="chapitre-intro">Financer les mesures sociales et libérer les travailleurs de l'exploitation économique.</p>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 8</span>
+          <h3>Écart maximum des salaires</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Interdiction dans toute entreprise opérant en France d'un écart de rémunération supérieur à 1 à 5 entre le salaire le plus bas et le revenu total (primes et dividendes inclus) du dirigeant le mieux payé.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 9</span>
+          <h3>Rétablissement d'un ISF renforcé et climatique</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Création d'un ISF fortement progressif incluant les actifs financiers et les biens de luxe, assorti d'un malus écologique pour les patrimoines investis dans les industries polluantes, et instaurant un héritage maximum.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 10</span>
+          <h3>Interdiction des licenciements boursiers et droit de veto ouvrier</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Interdiction de tout plan de licenciement économique dans les entreprises versant des dividendes à leurs actionnaires ou recevant des aides publiques, et création d'un droit de veto suspensif des représentants des salariés sur les restructurations.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 11</span>
+          <h3>Passage aux 32 heures hebdomadaires</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Réduction légale du temps de travail à 32 heures par semaine (semaine de 4 jours) sans perte de salaire et avec embauches compensatoires obligatoires dans les grandes entreprises.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 12</span>
+          <h3>Nationalisation et socialisation des secteurs stratégiques</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Création d'un pôle public de l'énergie (renationalisation intégrale d'EDF et Engie), création d'un pôle public bancaire, et nationalisation des autoroutes, des transports, de l'eau et de l'industrie pharmaceutique sous contrôle conjoint des travailleurs et des usagers.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 13</span>
+          <h3>Aide à la reprise d'entreprises en SCOP</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Droit de préemption prioritaire accordé aux salariés pour racheter leur entreprise sous forme de Société Coopérative et Participative (SCOP) grâce à un fonds public d'investissement à taux zéro.</p></div>
+      </div>
+    </section>
+
+    <!-- CHAPITRE 3 -->
+    <section id="chapitre-3">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <h2>Antisionisme, anticolonialisme et paix mondiale</h2>
+      </div>
+      <p class="chapitre-intro">Rupture avec les alliances militaires et défense stricte du droit international.</p>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 14</span>
+          <h3>Reconnaissance immédiate de l'État de Palestine</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Reconnaissance officielle et sans condition de l'État de Palestine par la France dans les frontières de 1967 avec Jérusalem-Est pour capitale, et ouverture d'une ambassade de plein exercice.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 15</span>
+          <h3>Embargo militaire total et rupture des coopérations sécuritaires</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Interdiction immédiate de toute vente, achat, transit ou transfert d'armes, de munitions, de drones et de logiciels de surveillance avec Israël ou tout État violant les conventions de Genève et les résolutions de l'ONU.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 16</span>
+          <h3>Interdiction économique vis-à-vis de la colonisation</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Interdiction stricte d'importer, de vendre ou de financer en France tout produit, service ou entreprise opérant dans les colonies illégales en Cisjordanie et à Jérusalem-Est, et demande officielle de suspension de l'accord d'association UE-Israël.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 17</span>
+          <h3>Protection de la solidarité internationale et du droit au boycott</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Garantie légale du droit d'appeler au boycott citoyen (campagnes BDS) et abrogation des circulaires restreignant l'expression anticoloniale, tout en maintenant une répression ferme contre toute forme d'antisémitisme, d'islamophobie ou de racisme.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 18</span>
+          <h3>Décolonisation et souveraineté des Outre-mer</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Organisation de référendums d'autodétermination et d'assemblées constituantes locales en Kanaky-Nouvelle-Calédonie, aux Antilles, en Guyane, à La Réunion et en Polynésie, accompagnée d'un plan d'indemnisation intégrale des victimes du chlordécone et des essais nucléaires.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 19</span>
+          <h3>Sortie du Franc CFA et annulation de la dette</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Accompagnement de la fin définitive de la tutelle monétaire sur les pays africains, fermeture des bases militaires françaises permanentes en Afrique et annulation unilatérale de la dette publique détenue par la France sur les pays du Sud.</p></div>
+      </div>
+    </section>
+
+    <!-- CHAPITRE 4 -->
+    <section id="chapitre-4">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <h2>Anti-impérialisme et rupture avec le « trumpisme »</h2>
+      </div>
+      <p class="chapitre-intro">Soustraire la France et l'Europe à l'influence politique, économique et numérique des États-Unis.</p>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 20</span>
+          <h3>Retrait de l'OTAN et diplomatie non-alignée</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Sortie immédiate du commandement intégré de l'OTAN suivie du retrait complet de l'organisation, pour bâtir une politique étrangère de paix, de désarmement nucléaire multilatéral et de coopération avec les pays du Sud global.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 21</span>
+          <h3>Blocage des lois extraterritoriales américaines</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Interdiction pour toute entreprise ou banque française d'appliquer les sanctions économiques unilatérales décidées par Washington, et création d'une chambre financière souveraine pour contourner le monopole du dollar.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 22</span>
+          <h3>Taxation des GAFAM et souveraineté numérique</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Taxe directe sur le chiffre d'affaires réel des géants numériques américains, interdiction d'héberger les données de santé, d'éducation ou d'administration sur des serveurs soumis au Cloud Act américain, et migration obligatoire des services publics vers les logiciels libres.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 23</span>
+          <h3>Protectionnisme écologique et social</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Dénonciation des traités de libre-échange (CETA, Mercosur, accords transatlantiques) et instauration de droits de douane écologiques et sociaux bloquant l'importation de produits issus d'États climatosceptiques ou ne respectant pas les droits syndicaux.</p></div>
+      </div>
+    </section>
+
+    <!-- CHAPITRE 5 -->
+    <section id="chapitre-5">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <h2>Antifascisme, lutte contre l'extrême droite et médias libres</h2>
+      </div>
+      <p class="chapitre-intro">Assécher les relais idéologiques et financiers de l'extrême droite en France.</p>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 24</span>
+          <h3>Dissolution systématique des milices et groupes néofascistes</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Application immédiate et sans délai de l'article L212-1 du Code de la sécurité intérieure pour dissoudre tout groupuscule identitaire, suprémaciste ou violent, et gel de leurs avoirs financiers.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 25</span>
+          <h3>Anti-concentration des médias et démocratisation de l'information</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Interdiction pour toute personne physique ou groupe industriel privé de détenir plus de 10 % du capital d'un média d'information, transfert de la propriété des grands médias aux sociétés de journalistes et aux citoyens, et création d'un fonds public de soutien aux médias indépendants.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 26</span>
+          <h3>Sanction renforcée contre les discours de haine et les discriminations</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Création d'un parquet national spécialisé contre les crimes et délits racistes, antisémites, islamophobes et LGBTphobes, et mise en place de tests de discrimination systématiques à l'embauche et au logement avec sanctions financières lourdes.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 27</span>
+          <h3>Mémoire des luttes antifascistes et ouvrières</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Inscription obligatoire dans les programmes d'histoire de l'école publique de l'histoire du mouvement ouvrier, de la Commune de Paris, des résistances antifascistes et des luttes anticoloniales.</p></div>
+      </div>
+    </section>
+
+    <!-- CHAPITRE 6 -->
+    <section id="chapitre-6">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <h2>Démocratie directe, libertés publiques et autodéfense populaire</h2>
+      </div>
+      <p class="chapitre-intro">Rendre le pouvoir aux citoyens et encadrer strictement les forces de l'ordre.</p>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 28</span>
+          <h3>Convocation d'une Assemblée constituante</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Élection au scrutin proportionnel intégral d'une Assemblée constituante chargée d'écrire la Constitution de la VIe République, soumise ensuite au référendum populaire.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 29</span>
+          <h3>Référendum d'Initiative Citoyenne (RIC) et révocation des élus</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Possibilité pour les citoyens de déclencher un référendum législatif, abrogatoire ou révocatoire dès lors qu'une pétition réunit 500 000 signatures.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 30</span>
+          <h3>Réforme radicale de la police et interdiction des armes de guerre</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Dissolution des unités de maintien de l'ordre les plus violentes (BRAV-M, BAC), interdiction définitive des lanceurs de balles de défense (LBD) et des grenades explosives en manifestation, création d'un organisme indépendant remplaçant l'IGPN et rétablissement d'une police de proximité désarmée au quotidien.</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 31</span>
+          <h3>Protection de l'autodéfense syndicale et associative</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Renforcement du droit de grève, défiscalisation et abondement public des caisses de solidarité et de grève, et création d'un statut protecteur de « lanceur d'alerte social et écologique ».</p></div>
+      </div>
+
+      <div class="loi-card">
+        <div class="loi-card-header">
+          <span class="loi-num">Loi 32</span>
+          <h3>Régularisation des travailleurs et accueil digne</h3>
+          <div class="loi-toggle">▼</div>
+        </div>
+        <div class="loi-card-body"><p>Régularisation automatique de tous les travailleurs, étudiants et parents d'enfants scolarisés sans-papiers, fermeture immédiate des Centres de Rétention Administrative (CRA) et abrogation des lois restrictives sur l'immigration.</p></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p class="motto">Liberté · Solidarité · Dignité</p>
+    <p>Programme du Mouvement Politique de la Jeunesse</p>
+  </footer>
+
+  <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+  <script>
+    // Progress bar
+    const progressBar = document.getElementById('progressBar');
+    const backTop = document.getElementById('backTop');
+    const nav = document.getElementById('mainNav');
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      progressBar.style.width = progress + '%';
+      backTop.classList.toggle('visible', scrollTop > 600);
+      nav.classList.toggle('scrolled', scrollTop > 100);
+    });
+
+    // Intersection Observer for sections
+    const sections = document.querySelectorAll('section');
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    sections.forEach(s => sectionObserver.observe(s));
+
+    // Active nav link
+    const navLinks = document.querySelectorAll('nav a[data-target]');
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          const activeLink = document.querySelector(`nav a[data-target="${entry.target.id}"]`);
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, { threshold: 0.3, rootMargin: '-100px 0px -60% 0px' });
+
+    sections.forEach(s => navObserver.observe(s));
+
+    // Law card toggle
+    document.querySelectorAll('.loi-card').forEach(card => {
+      card.addEventListener('click', () => {
+        card.classList.toggle('open');
+      });
+    });
+
+    // Search
+    const searchContainer = document.getElementById('searchContainer');
+    const searchInput = document.getElementById('searchInput');
+
+    function toggleSearch() {
+      searchContainer.classList.toggle('active');
+      if (searchContainer.classList.contains('active')) {
+        searchInput.focus();
+      } else {
+        searchInput.value = '';
+        filterCards('');
+      }
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      filterCards(e.target.value.toLowerCase());
+    });
+
+    function filterCards(query) {
+      document.querySelectorAll('.loi-card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const match = text.includes(query);
+        card.style.display = match ? '' : 'none';
+        if (match && query) card.classList.add('open');
+        else if (query) card.classList.remove('open');
+      });
+    }
+
+    // Keyboard shortcut
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && !searchContainer.classList.contains('active')) {
+        e.preventDefault();
+        toggleSearch();
+      }
+      if (e.key === 'Escape' && searchContainer.classList.contains('active')) {
+        toggleSearch();
+      }
+    });
+  </script>
+</body>
+</html>   

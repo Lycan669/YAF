@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171717">
+  <title>À propos — Liberté, solidarité</title>
+
+  <style>
+    :root {
+      --noir: #171717;
+      --rouge: #b4232d;
+      --creme: #f3eee5;
+      --gris: #b9b3aa;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--noir);
+      color: var(--creme);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.7;
+    }
+
+    a { color: inherit; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 7%;
+      background: #171717ed;
+      border-bottom: 1px solid #ffffff20;
+      font-family: Arial, sans-serif;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .brand span {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--rouge);
+    }
+
+    nav { display: flex; gap: 18px; }
+
+    nav a {
+      color: var(--gris);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    nav a:hover { color: white; }
+
+    .hero {
+      padding: 100px 20px 80px;
+      text-align: center;
+      background: radial-gradient(ellipse at center, #b4232d3d, transparent 65%);
+    }
+
+    .eyebrow {
+      color: #f08080;
+      font: bold 12px Arial, sans-serif;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 12px 0;
+      font-size: clamp(42px, 8vw, 78px);
+      line-height: 1.05;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: 18px auto;
+      color: var(--gris);
+      font-size: 18px;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 12px 20px;
+      border-radius: 5px;
+      background: var(--rouge);
+      color: white;
+      font: bold 14px Arial, sans-serif;
+      text-decoration: none;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .button:hover {
+      transform: translateY(-3px);
+      background: #d13b45;
+    }
+
+    main {
+      width: min(1000px, 88%);
+      margin: 0 auto;
+      padding: 20px 0 80px;
+    }
+
+    .intro {
+      padding: 30px;
+      border-left: 4px solid var(--rouge);
+      background: #ffffff08;
+      font-size: 19px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 45px;
+    }
+
+    .card {
+      padding: 24px;
+      border: 1px solid #ffffff1c;
+      border-radius: 10px;
+      background: #ffffff08;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: #e4484e;
+    }
+
+    .card .icon { font-size: 30px; }
+
+    .card h2 {
+      margin: 10px 0 6px;
+      font-size: 23px;
+    }
+
+    .card p { margin: 0; color: var(--gris); }
+
+    .quote {
+      margin: 55px 0;
+      padding: 28px;
+      border-top: 1px solid #ffffff25;
+      border-bottom: 1px solid #ffffff25;
+      color: #f0c4c4;
+      text-align: center;
+      font-size: clamp(22px, 4vw, 34px);
+      font-style: italic;
+    }
+
+    footer {
+      padding: 25px;
+      color: var(--gris);
+      text-align: center;
+      border-top: 1px solid #ffffff20;
+      font: 13px Arial, sans-serif;
+    }
+
+    @media (max-width: 650px) {
+      header { align-items: flex-start; flex-direction: column; }
+      nav { flex-wrap: wrap; gap: 12px; }
+      .cards { grid-template-columns: 1fr; }
+      .hero { padding-top: 70px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="brand" href="index.html">
+      <span aria-hidden="true">✊</span>
+      <span style="background:none;width:auto;height:auto">LIBERTÉ & SOLIDARITÉ</span>
+    </a>
+
+    <nav aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="hymne.html">L’hymne</a>
+      <a href="#valeurs">Nos valeurs</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Une voix, plusieurs chemins</div>
+    <h1>À propos</h1>
+    <p>
+      Cette page présente l’esprit de notre hymne : défendre la dignité,
+      la liberté et la solidarité, et refuser la haine.
+    </p>
+    <a class="button" href="hymne.html">Découvrir l’hymne →</a>
+  </section>
+
+  <main>
+    <section class="intro">
+      <strong>Pourquoi cette page ?</strong><br>
+      Pour partager un message de résistance pacifique et d’espoir,
+      et rappeler qu’une société plus juste se construit ensemble,
+      par l’écoute, l’entraide et l’action démocratique.
+    </section>
+
+    <section id="valeurs" class="cards" aria-label="Nos valeurs">
+      <article class="card">
+        <div class="icon" aria-hidden="true">🕊️</div>
+        <h2>Liberté</h2>
+        <p>Protéger les droits, l’expression et la dignité de chaque personne.</p>
+      </article>
+
+      <article class="card">
+        <div class="icon" aria-hidden="true">🤝</div>
+        <h2>Solidarité</h2>
+        <p>Se soutenir et faire place à celles et ceux que l’on entend trop peu.</p>
+      </article>
+
+      <article class="card">
+        <div class="icon" aria-hidden="true">🌱</div>
+        <h2>Espoir</h2>
+        <p>Imaginer un avenir plus juste et le faire grandir ensemble.</p>
+      </article>
+    </section>
+
+    <blockquote class="quote">
+      « Face à la haine, choisissons la dignité, le courage et l’entraide. »
+    </blockquote>
+
+    <section style="text-align:center">
+      <h2>Écouter et chanter</h2>
+      <p style="color:var(--gris)">
+        Retrouve les paroles et le lecteur audio sur la page de l’hymne.
+      </p>
+      <a class="button" href="hymne.html">Aller à l’hymne</a>
+    </section>
+  </main>
+
+  <footer>
+    Un message de liberté, de solidarité et de respect.
+  </footer>
+
+</body>
+</html>

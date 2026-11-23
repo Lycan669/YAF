@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#171717">
+  <title>Notre hymne — Liberté, solidarité</title>
+
+  <style>
+    :root {
+      --noir: #171717;
+      --noir-doux: #202020;
+      --rouge: #b4232d;
+      --rouge-vif: #e4484e;
+      --creme: #f3eee5;
+      --gris: #b9b3aa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--creme);
+      background: var(--noir);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.85rem 7%;
+      background: #171717ed;
+      border-bottom: 1px solid #ffffff18;
+      backdrop-filter: blur(10px);
+      font-family: Arial, sans-serif;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      color: white;
+      background: var(--rouge);
+      border-radius: 50%;
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.3rem;
+    }
+
+    .nav-links a {
+      color: var(--gris);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a:hover {
+      color: white;
+    }
+
+    .hero {
+      min-height: 72vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      padding: 5rem 1.5rem;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at center, #b4232d35, transparent 58%),
+        linear-gradient(180deg, #171717, #211a1a);
+    }
+
+    .hero-inner {
+      max-width: 850px;
+      animation: apparition 1s ease both;
+    }
+
+    .eyebrow {
+      color: var(--rouge-vif);
+      font-family: Arial, sans-serif;
+      font-size: 0.75rem;
+      font-weight: bold;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0.5rem 0;
+      font-size: clamp(3rem, 10vw, 6.8rem);
+      line-height: 0.98;
+    }
+
+    .hero p {
+      max-width: 600px;
+      margin: 1.4rem auto 2rem;
+      color: var(--gris);
+      font-size: 1.15rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.6rem;
+      min-height: 48px;
+      padding: 0.7rem 1.2rem;
+      color: white;
+      background: var(--rouge);
+      border: 1px solid var(--rouge);
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      background: #d12f39;
+    }
+
+    .button.secondary {
+      background: transparent;
+      border-color: #ffffff55;
+    }
+
+    .button.secondary:hover {
+      background: #ffffff12;
+    }
+
+    .section {
+      width: min(900px, 90%);
+      margin: 0 auto;
+      padding: 4rem 0;
+    }
+
+    .section-heading {
+      margin-bottom: 1.5rem;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.1rem);
+    }
+
+    .section-heading p {
+      margin-top: 0.4rem;
+      color: var(--gris);
+    }
+
+    .player {
+      padding: 1.4rem;
+      background: linear-gradient(135deg, #292323, #1e1e1e);
+      border: 1px solid #ffffff1c;
+      border-radius: 18px;
+      box-shadow: 0 18px 50px #0005;
+    }
+
+    .player-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .track-title {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .track-note {
+      margin: 0.15rem 0 0;
+      color: var(--gris);
+      font-family: Arial, sans-serif;
+      font-size: 0.85rem;
+    }
+
+    .play-button {
+      width: 50px;
+      height: 50px;
+      flex: 0 0 50px;
+      color: white;
+      background: var(--rouge);
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .progress-wrap {
+      margin-top: 1.2rem;
+    }
+
+    #progress {
+      width: 100%;
+      accent-color: var(--rouge-vif);
+      cursor: pointer;
+    }
+
+    .times {
+      display: flex;
+      justify-content: space-between;
+      color: var(--gris);
+      font-family: Arial, sans-serif;
+      font-size: 0.8rem;
+    }
+
+    .volume-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-top: 0.7rem;
+      color: var(--gris);
+      font-family: Arial, sans-serif;
+      font-size: 0.85rem;
+    }
+
+    #volume {
+      width: 120px;
+      accent-color: var(--rouge-vif);
+    }
+
+    .audio-help {
+      margin: 1rem 0 0;
+      color: var(--gris);
+      font-family: Arial, sans-serif;
+      font-size: 0.85rem;
+    }
+
+    .lyrics-card {
+      padding: clamp(1.2rem, 5vw, 2.5rem);
+      background: #211e1c;
+      border: 1px solid #ffffff18;
+      border-left: 4px solid var(--rouge);
+      border-radius: 14px;
+    }
+
+    .lyrics-card[hidden] {
+      display: none;
+    }
+
+    .verse {
+      padding: 1.2rem 0;
+      border-bottom: 1px solid #ffffff18;
+    }
+
+    .verse:last-child {
+      border-bottom: 0;
+    }
+
+    .verse h3 {
+      color: var(--rouge-vif);
+      font-family: Arial, sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .verse p {
+      margin-bottom: 0;
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+    }
+
+    .chorus {
+      color: white;
+      font-weight: bold;
+    }
+
+    .closing {
+      padding: 3rem 1.5rem;
+      color: var(--creme);
+      background: var(--rouge);
+      text-align: center;
+    }
+
+    .closing blockquote {
+      max-width: 750px;
+      margin: 0 auto;
+      font-size: clamp(1.5rem, 4vw, 2.6rem);
+      line-height: 1.35;
+    }
+
+    footer {
+      padding: 1.2rem;
+      color: var(--gris);
+      text-align: center;
+      font-family: Arial, sans-serif;
+      font-size: 0.85rem;
+    }
+
+    @keyframes apparition {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        padding: 0.75rem 5%;
+      }
+
+      .nav-links {
+        gap: 0.8rem;
+      }
+
+      .nav-links a {
+        font-size: 0.8rem;
+      }
+
+      .brand-name {
+        display: none;
+      }
+
+      .hero {
+        min-height: 65vh;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="#accueil" aria-label="Retour à l'accueil">
+      <span class="brand-mark" aria-hidden="true">✊</span>
+      <span class="brand-name">SOLIDARITÉ</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="#musique">La musique</a>
+      <a href="#paroles">Les paroles</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="accueil">
+      <div class="hero-inner">
+        <span class="eyebrow">Un chant pour faire front ensemble</span>
+        <h1>Notre hymne</h1>
+        <p>
+          Un chant de solidarité, d’égalité et de liberté.
+          Découvre la musique, puis ouvre les paroles pour chanter ensemble.
+        </p>
+        <div class="hero-buttons">
+          <a class="button" href="#musique">▶ Écouter l’hymne</a>
+          <button class="button secondary" id="showLyrics" type="button">
+            ↓ Découvrir les paroles
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="musique">
+      <div class="section-heading">
+        <span class="eyebrow">À écouter</span>
+        <h2>La musique</h2>
+        <p>Lance le chant et règle le volume à ton goût.</p>
+      </div>
+
+      <div class="player">
+        <div class="player-top">
+          <div>
+            <h3 class="track-title">Notre hymne — Faire front</h3>
+            <p class="track-note">Fichier audio : hymne.mp3</p>
+          </div>
+          <button class="play-button" id="playButton" type="button"
+                  aria-label="Lire la musique">▶</button>
+        </div>
+
+        <div class="progress-wrap">
+          <input id="progress" type="range" min="0" max="100" value="0"
+                 aria-label="Position dans la musique">
+          <div class="times">
+            <span id="currentTime">0:00</span>
+            <span id="duration">0:00</span>
+          </div>
+        </div>
+
+        <div class="volume-row">
+          <label for="volume">Volume</label>
+          <input id="volume" type="range" min="0" max="1" step="0.05" value="0.8">
+        </div>
+
+        <p class="audio-help">
+          Place ton fichier audio dans le même dossier que cette page et nomme-le
+          <strong>hymne.mp3</strong>.
+        </p>
+
+        <audio id="audio" preload="metadata">
+          <source src="hymne.mp3" type="audio/mpeg">
+          Ton navigateur ne prend pas en charge la lecture audio.
+        </audio>
+      </div>
+    </section>
+
+    <section class="section" id="paroles">
+      <div class="section-heading">
+        <span class="eyebrow">À chanter ensemble</span>
+        <h2>Les paroles</h2>
+        <p>Un hymne original autour de la solidarité et du refus de la haine.</p>
+      </div>
+
+      <div class="lyrics-card" id="lyrics">
+        <div class="verse">
+          <h3>Couplet I</h3>
+          <p>
+            Dans les rues où nos pas résonnent,<br>
+            Nos voix se lèvent, nos mains se donnent.<br>
+            Quand la peur voudrait nous séparer,<br>
+            Nous choisissons de nous rassembler.<br>
+            D’un quartier jusqu’à l’autre rive,<br>
+            Que notre espoir reste vivant :<br>
+            Personne ne marche seul ici,<br>
+            Nos forces grandissent en avançant.
+          </p>
+        </div>
+
+        <div class="verse">
+          <h3>Refrain — tous ensemble</h3>
+          <p class="chorus">
+            Nous ferons front, nous ferons chaîne,<br>
+            Main dans la main, cœur contre cœur.<br>
+            Nous ferons front contre la haine,<br>
+            Et de nos voix naîtra le jour.<br>
+            Travailleurs, voisines, camarades,<br>
+            Ensemble, faisons reculer la peur :<br>
+            Tant que nos chants montent des rues,<br>
+            La liberté n’est pas perdue !
+          </p>
+        </div>
+
+        <div class="verse">
+          <h3>Couplet II</h3>
+          <p>
+            Ni la haine, ni les frontières<br>
+            N’effaceront notre fraternité.<br>
+            Nous défendons, dans la lumière,<br>
+            La dignité et l’égalité.<br>
+            Par l’entraide et par la parole,<br>
+            Par la justice et la solidarité,<br>
+            Nous bâtissons un monde où chacun<br>
+            Peut vivre libre et respecté.
+          </p>
+        </div>
+
+        <div class="verse">
+          <h3>Refrain final — plus fort</h3>
+          <p class="chorus">
+            Nous ferons front, nous ferons chaîne,<br>
+            Main dans la main, cœur contre cœur.<br>
+            Nous ferons front contre la haine,<br>
+            Et de nos voix naîtra le jour.<br>
+            Tant que nos chants montent des rues,<br>
+            <strong>La liberté n’est pas perdue !</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <blockquote>
+        « Quand nos voix se rassemblent, l’espoir avance. »
+      </blockquote>
+    </section>
+  </main>
+
+  <footer>
+    Solidarité · Égalité · Liberté
+  </footer>
+
+  <script>
+    const audio = document.getElementById("audio");
+    const playButton = document.getElementById("playButton");
+    const progress = document.getElementById("progress");
+    const volume = document.getElementById("volume");
+    const currentTimeText = document.getElementById("currentTime");
+    const durationText = document.getElementById("duration");
+    const lyrics = document.getElementById("lyrics");
+    const showLyrics = document.getElementById("showLyrics");
+
+    function formatTime(seconds) {
+      if (!Number.isFinite(seconds)) return "0:00";
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = Math.floor(seconds % 60)
+        .toString()
+        .padStart(2, "0");
+      return `${minutes}:${remainingSeconds}`;
+    }
+
+    playButton.addEventListener("click", async () => {
+      if (audio.paused) {
+        try {
+          await audio.play();
+        } catch {
+          alert("Ajoute hymne.mp3 dans le même dossier que ce fichier HTML.");
+        }
+      } else {
+        audio.pause();
+      }
+    });
+
+    audio.addEventListener("play", () => {
+      playButton.textContent = "⏸";
+      playButton.setAttribute("aria-label", "Mettre en pause");
+    });
+
+    audio.addEventListener("pause", () => {
+      playButton.textContent = "▶";
+      playButton.setAttribute("aria-label", "Lire la musique");
+    });
+
+    audio.addEventListener("loadedmetadata", () => {
+      durationText.textContent = formatTime(audio.duration);
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      currentTimeText.textContent = formatTime(audio.currentTime);
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        progress.value = (audio.currentTime / audio.duration) * 100;
+      }
+    });
+
+    progress.addEventListener("input", () => {
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        audio.currentTime = (progress.value / 100) * audio.duration;
+      }
+    });
+
+    volume.addEventListener("input", () => {
+      audio.volume = Number(volume.value);
+    });
+
+    audio.volume = Number(volume.value);
+
+    showLyrics.addEventListener("click", () => {
+      lyrics.scrollIntoView({ behavior: "smooth", block: "start" });
+      lyrics.animate(
+        [
+          { boxShadow: "0 0 0 0 #e4484e00" },
+          { boxShadow: "0 0 0 5px #e4484e88" },
+          { boxShadow: "0 0 0 0 #e4484e00" }
+        ],
+        { duration: 900 }
+      );
+    });
+  </script>
+</body>
+</html>
